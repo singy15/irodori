@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html style="width:100%;height:100%;margin:0px;padding:0px;">
+  <head>
+    <meta charset="UTF-8">
+    <title>irodori</title>
+    <link rel="stylesheet" href="./lib/jquery-ui-1.12.1.custom/jquery-ui.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+  </head>
+  <style>
+    .ui-autocomplete {
+        max-height: 120px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 20px;
+    }
+    input {
+      font-size : 0.7em;
+      /*background-color : #000;*/
+      /*color : #fff;*/
+    }
+    body {
+      background-color: rgba(24, 24, 24, .0);
+      color: #fff;
+      margin : 0px;
+      padding : 0px;
+      -webkit-user-select: none;
+    }
+    img {
+      -webkit-app-region: drag;
+    }
+    span {
+      color : black;
+    }
+    textarea {
+      resize : none;
+      font-family: "ＭＳ ゴシック",sans-serif;
+      font-size : 0.7em;
+    }
+  </style>
+  <body style="width:100%;height:100%;margin:0px;padding:0px;">
+    <span>irodori</span><br>
+    <span id="clipIndex"></span><br>
+    <input type="text" id="tbCmd" style="box-sizing:border-box;width:100%;height:20px;"/>
+    <textarea style="box-sizing:border-box;width:100%;height:100px;resize:none;"></textarea><br>
+    <textarea id="nowClips" style="box-sizing:border-box;width:100%;height:100px;resize:none;"></textarea><br>
+    <textarea id="clips" style="box-sizing:border-box;width:100%;height:100px;resize:none;"></textarea>
+  </body>
+  <script src="./lib/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+  <script>window.$ = window.jQuery = require('jquery');</script>
+  <script src="./lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+  <script src="./lib/underscore.js"></script>
+  <script>
+    var electron = require('electron');
+    var minwind = electron.remote.require('./minwind');
+    // window.jQuery = window.$ = require('jquery');
+
+    var tbCmd = $("#tbCmd");
+
+    function refocus() {
+      tbCmd.focus();
+    }
+
+    function resetCandidate(candidate) {
+      tbCmd.autocomplete({
+        source : candidate
+      });
+    }
+
+    var lastClip = "";
+    var clips = [""];
+    var clipIndex = 0;
+
+    function observeClip() {
+      minwind.getClipboard(function(clip) {
+        var cliptext = $("#nowClips").val(clip);
+        if(lastClip !== clip) {
+          lastClip = clip;
+          clips.unshift(clip);
+          if(clips.length > 10) {
+            clips.pop();
+          }
+        }
+      });
+    }
+
+    setInterval("observeClip()", 500);
+
+    $(document).ready(function() {
+      refocus();
+      resetCandidate();
+
+      // tbCmd.blur(refocus);
+
+
+      $(document).keyup(function(e) {
+        switch (e.which){
+          case 38: //Enter
+            clipIndex -= 1;
+            if(clipIndex < 0) {
+              clipIndex = 0;
+            }
+            $("#clips").val(clips[clipIndex]);
+            break;
+          case 40: //Esc
+            clipIndex += 1;
+            if(clipIndex >= clips.length) {
+              clipIndex = clips.length - 1;
+            }
+            $("#clips").val(clips[clipIndex]);
+            break;
+        }
+        $("#clipIndex").text(clipIndex);
+      });
+
+
+      $(document).keyup(function(e) {
+        switch (e.which){
+          case 13: //Enter
+            break;
+          case 27: //Esc
+            tbCmd.val("");
+            resetCandidate(minwind.getRecent());
+            minwind.hideWindow();
+            break;
+        }
+      });
+
+      tbCmd.keyup(function(e) {
+        switch (e.which){
+          case 13: //Enter
+            minwind.procInput(tbCmd.val());
+            tbCmd.val("");
+            resetCandidate(minwind.getRecent());
+            minwind.hideWindow();
+            break;
+          case 27: //Esc
+            tbCmd.val("");
+            resetCandidate(minwind.getRecent());
+            minwind.hideWindow();
+            break;
+          default:
+            if(minwind.isDirectory(tbCmd.val())) {
+              minwind.getDirectoryLs(tbCmd.val(), function(path, err, files) {
+                console.log(_.map(files, function(e) { return path + e;}));
+                resetCandidate(_.map(files, function(e) { return path + e;}));
+              });
+            } else {
+              resetCandidate(minwind.getRecent());
+            }
+            break;
+        }
+      });
+    });
+  </script>
+</html>
+
