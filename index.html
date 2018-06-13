@@ -4,8 +4,17 @@
   <head>
     <meta charset="UTF-8">
     <title>irodori</title>
-    <link rel="stylesheet" href="./lib/jquery-ui-1.12.1.custom/jquery-ui.min.css">
     <link rel="stylesheet" href="./css/style.css">
+    <!-- <link rel="stylesheet" type="text/css" href="./lib/jquery-easyui-1.5.5.2/themes/default/easyui.css"> -->
+    <link rel="stylesheet" type="text/css" href="./lib/jquery-easyui-1.5.5.2/themes/metro-orange/easyui.css">
+    <link rel="stylesheet" type="text/css" href="./lib/jquery-easyui-1.5.5.2/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="./lib/jquery-easyui-1.5.5.2/themes/color.css">
+    <!-- <link rel="stylesheet" href="./lib/jquery-ui-1.12.1.custom/jquery-ui.min.css"> -->
+    <script type="text/javascript" src="./lib/jquery-easyui-1.5.5.2/jquery.min.js"></script>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script type="text/javascript" src="./lib/jquery-easyui-1.5.5.2/jquery.easyui.min.js"></script>
+    <script src="./lib/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+
   </head>
   <style>
     .ui-autocomplete {
@@ -14,11 +23,13 @@
         overflow-x: hidden;
         padding-right: 20px;
     }
+
     input {
       font-size : 0.7em;
       /*background-color : #000;*/
       /*color : #fff;*/
     }
+
     body {
       background-color: rgba(24, 24, 24, .0);
       color: #fff;
@@ -26,33 +37,50 @@
       padding : 0px;
       -webkit-user-select: none;
     }
+
     img {
       -webkit-app-region: drag;
     }
+
     span {
       color : black;
     }
+
     textarea {
       resize : none;
-      font-family: "ＭＳ ゴシック",sans-serif;
+      /* font-family: "ＭＳ ゴシック",sans-serif; */
       font-size : 0.7em;
     }
   </style>
   <body style="width:100%;height:100%;margin:0px;padding:0px;">
-    <span>irodori</span><br>
-    <span id="clipIndex"></span><br>
-    <input type="text" id="tbCmd" style="box-sizing:border-box;width:100%;height:20px;"/>
-    <textarea style="box-sizing:border-box;width:100%;height:100px;resize:none;"></textarea><br>
-    <textarea id="nowClips" style="box-sizing:border-box;width:100%;height:100px;resize:none;"></textarea><br>
-    <textarea id="clips" style="box-sizing:border-box;width:100%;height:100px;resize:none;"></textarea>
+    <!-- <div class="easyui-panel" style="width:100%;height:100%"> -->
+    <div>
+      <table>
+        <tr>
+          <td><img border="0" src="./img/irodori-icon.ico" width="16" height="16" alt="img" style="vertical-align:middle"></td>
+          <td><span style="font-size: 0.8em">irodori</span></td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <div id="editor" style="width:100%;height:100%; position:fixed; top:0px; right:5px;"></div>
+    </div>
+
+    <span id="clipIndex" style="display:none"></span><br>
+    <input type="text" id="tbCmd" style="box-sizing:border-box;width:100%;height:20px; display:none"/>
+    <textarea style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none"></textarea><br>
+    <textarea id="nowClips" style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none;"></textarea><br>
+    <textarea id="clips" style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none;"></textarea>
+
+    <!-- </div> -->
+
   </body>
-  <script src="./lib/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
-  <script>window.$ = window.jQuery = require('jquery');</script>
-  <script src="./lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+  <!-- <script src="./lib/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script> -->
+  <!-- <script src="./lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script> -->
   <script src="./lib/underscore.js"></script>
   <script>
     var electron = require('electron');
-    var minwind = electron.remote.require('./minwind');
+    var minwind = electron.remote.require('./irodori');
     // window.jQuery = window.$ = require('jquery');
 
     var tbCmd = $("#tbCmd");
@@ -87,6 +115,13 @@
     setInterval("observeClip()", 500);
 
     $(document).ready(function() {
+
+      var editor = ace.edit("editor");
+      editor.setTheme("ace/theme/github");
+      // editor.setTheme("ace/theme/twilight");
+      editor.session.setMode("ace/mode/markdown");
+
+
       refocus();
       resetCandidate();
 
