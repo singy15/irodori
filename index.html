@@ -28,6 +28,21 @@
         font-family : "sans-serif";
     }
 
+    .btn {
+      cursor : pointer;
+      /*font-size : small;*/
+      background-color : #888;
+      color : #FFF;
+      margin-bottom : 1px;
+      padding-left : 5px;
+    }
+
+    .btn a {
+      /*font-size : small;*/
+      color : #FFF;
+      text-decoration : none;
+    }
+
     .sidebar {
       height:100%;
       width:200px;
@@ -49,13 +64,14 @@
     }
 
     div#body-bk{
-        padding:25px 0 25px 0;    /* 上下に160pxを余白を取る */
+        /*padding:25px 0 25px 0;*/    /* 上下に160pxを余白を取る */
+      position: fixed;
+        top : 25px;
+        bottom : 25px;
+        left : 0px;
+        right : 0px;
     }
      
-    div#body{
-        width:960px;
-        margin:auto;
-    }
 
     div#footer-fixed
     {
@@ -67,20 +83,7 @@
         background-color:#444;     /* 背景色(黒) */
     }
      
-    div#footer-bk
-    {
-      background-color:#444;     /* 背景色(黒) */
-      padding:0px;       /* 上10px、下20pxをあける */
-      height:15px;              /* 縦の高さ140px */
-      width:100%;                /* 横の幅を100% */
-    }
-     
-    div#footer { 
-      border: 1px solid #fff;    /* 表示領域を白枠で囲う */
-      height: 100%;              /* 縦の表示領域はheader-bkと同じ */
-      width: 960px;              /* 横の幅970px */
-      margin: auto;              /* 中央揃え */
-    }
+
 
 
     .ui-autocomplete {
@@ -97,11 +100,11 @@
     }
 
     body {
-      background-color: rgba(24, 24, 24, .0);
+      background-color: #333;
       color: #fff;
       margin : 0px;
       padding : 0px;
-      -webkit-user-select: none;
+      /* -webkit-user-select: none; */
     }
 
     img {
@@ -117,11 +120,18 @@
       /* font-family: "ＭＳ ゴシック",sans-serif; */
       font-size : 0.7em;
     }
+
+    #editor {
+        width : 100%;
+        /*height : 400px;*/
+        height : 99%;
+   }
+
   </style>
   <body>
 
 
-    <div id="sidebar" class="sidebar" style="width:40px;">
+    <!-- <div id="sidebar" class="sidebar" style="width:40px;"> -->
         <!--<span class="icon icon-circle-left" v-on:click="toggleDescriptionEdit"></span>-->
         <!-- <h3 v-show="sidebarShown" class="w3-bar-item" style="display:inline"><span class="icon icon-stack" style="font-size:18px"></span>&nbsp;Stak</h3>-->
         <!-- <span v-show="sidebarShown" v-on:click="toggleSidebar" class="icon icon-circle-left" style="float:right;padding:10px;font-size:large;cursor : pointer;"></span>-->
@@ -131,7 +141,7 @@
         <!-- <a v-show="sidebarShown" href="/view/tasks" class="w3-bar-item w3-button">Tasks</a>-->
         <!-- <a v-show="sidebarShown" href="/view/workplan" class="w3-bar-item w3-button">Workplan</a>-->
         <!-- <a v-show="sidebarShown" href="/view/users" class="w3-bar-item w3-button">Users</a>-->
-    </div>
+    <!-- </div> -->
 
 
     <!-- <div id="pageContent" style="margin-left:40px"> -->
@@ -148,8 +158,15 @@
     <!--   </div> -->
     <!-- </div> -->
 
+    <!--  height:100%; -->
+    <!--  width:200px; -->
+    <!--  background-color:#CCC; -->
+    <!--  position:fixed!important; -->
+    <!--  z-index:1; -->
+    <!--  overflow:auto -->
 
-    <div id="header-fixed" style="margin-left:40px">
+
+    <div id="header-fixed">
       <table>
         <tr>
           <td><img border="0" src="./img/irodori-icon.ico" width="16" height="16" alt="img" style="vertical-align:middle"></td> 
@@ -157,17 +174,40 @@
         </tr> 
       </table> 
     </div> 
-    <div id="body-bk" style="margin-left:40px"> 
-      <span>qwe</span> 
-      <div id="editor" style="width:100%;height:100%;"></div> 
-      <span id="clipIndex" style="display:none"></span><br> 
-      <input type="text" id="tbCmd" style="box-sizing:border-box;width:100%;height:20px; display:none"/> 
-      <textarea style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none"></textarea><br> 
-      <textarea id="nowClips" style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none;"></textarea><br> 
-      <textarea id="clips" style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none;"></textarea> 
+    <div id="body-bk"> 
+      <!-- <div style="position:fixed!important;width:50px;height:100%;background-color:#AAA;padding:0px;margin:0px;"> -->
+        <!-- <span class="icon icon-home"></span> -->
+        <!-- <span class="icon icon-pencil"></span>-->
+        <!-- <span class="icon icon-file-text"></span><span>MEMO</span> -->
+
+        <!-- <div class="btn">MEMO</div> -->
+        <!-- <div class="btn">CLIP</div> -->
+        <!-- <div class="btn">DIFF</div> -->
+
+        <!-- <span class="icon icon-file-empty"></span>-->
+          <!-- <span class="icon icon-paste"></span>-->
+
+          <!-- <span class="icon icon-paste"></span>-->
+          <!-- <span class="icon icon-clipboard"></span>-->
+          <!-- <span class="icon icon-command"></span>-->
+          <!-- <span class="icon icon-terminal"></span>-->
+          <!-- <span class="icon icon-paste"></span>-->
+          <!-- <span class="icon icon-paste"></span>-->
+          <!-- <span class="icon icon-paste"></span>-->
+          <!-- </div> -->
+      <div>
+        <!-- <div id="editor" style="width:100%;height:100%;"></div>  -->
+        <div id="editor" style="position:fixed; top:25px; bottom:25px;"></div>
+
+        <!-- <span id="clipIndex" style="display:none"></span><br>  -->
+        <!-- <input type="text" id="tbCmd" style="box-sizing:border-box;width:100%;height:20px; display:none"/>  -->
+        <!-- <textarea style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none"></textarea><br>  -->
+        <!-- <textarea id="nowClips" style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none;"></textarea><br>  -->
+        <!-- <textarea id="clips" style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none;"></textarea>  -->
+      </div>
     </div> 
-    <div id="footer-fixed" style="margin-left:40px"> 
-        <span style="color:#FFF;">asdf</span> 
+    <div id="footer-fixed"> 
+        <span style="color:#FFF;">Powerd by Electron, Ace.js, jQuery, Node.js.</span> 
     </div> 
 
 
@@ -191,13 +231,13 @@
     var tbCmd = $("#tbCmd");
 
     function refocus() {
-      tbCmd.focus();
+      // tbCmd.focus();
     }
 
     function resetCandidate(candidate) {
-      tbCmd.autocomplete({
-        source : candidate
-      });
+      // tbCmd.autocomplete({
+      //   source : candidate
+      // });
     }
 
     var lastClip = "";
@@ -205,26 +245,27 @@
     var clipIndex = 0;
 
     function observeClip() {
-      minwind.getClipboard(function(clip) {
-        var cliptext = $("#nowClips").val(clip);
-        if(lastClip !== clip) {
-          lastClip = clip;
-          clips.unshift(clip);
-          if(clips.length > 10) {
-            clips.pop();
-          }
-        }
-      });
+      // minwind.getClipboard(function(clip) {
+      //   var cliptext = $("#nowClips").val(clip);
+      //   if(lastClip !== clip) {
+      //     lastClip = clip;
+      //     clips.unshift(clip);
+      //     if(clips.length > 10) {
+      //       clips.pop();
+      //     }
+      //   }
+      // });
     }
 
-    setInterval("observeClip()", 500);
+    // setInterval("observeClip()", 500);
 
     $(document).ready(function() {
 
       var editor = ace.edit("editor");
-      editor.setTheme("ace/theme/github");
-      // editor.setTheme("ace/theme/twilight");
+      // editor.setTheme("ace/theme/github");
+      //editor.setTheme("ace/theme/twilight");
       editor.session.setMode("ace/mode/markdown");
+      editor.setKeyboardHandler("ace/keyboard/vim");
 
 
       refocus();
@@ -242,13 +283,13 @@
             }
             $("#clips").val(clips[clipIndex]);
             break;
-          case 40: //Esc
-            clipIndex += 1;
-            if(clipIndex >= clips.length) {
-              clipIndex = clips.length - 1;
-            }
-            $("#clips").val(clips[clipIndex]);
-            break;
+          // case 40: //Esc
+          //   clipIndex += 1;
+          //   if(clipIndex >= clips.length) {
+          //     clipIndex = clips.length - 1;
+          //   }
+          //   $("#clips").val(clips[clipIndex]);
+          //   break;
         }
         $("#clipIndex").text(clipIndex);
       });
@@ -258,11 +299,11 @@
         switch (e.which){
           case 13: //Enter
             break;
-          case 27: //Esc
-            tbCmd.val("");
-            resetCandidate(minwind.getRecent());
-            minwind.hideWindow();
-            break;
+          // case 27: //Esc
+          //   tbCmd.val("");
+          //   resetCandidate(minwind.getRecent());
+          //   minwind.hideWindow();
+          //   break;
         }
       });
 
