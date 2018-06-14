@@ -127,6 +127,30 @@
         height : 99%;
    }
 
+   .out{
+     width: 200px;
+     height: 200px;
+     font-size:0.8em;
+     opacity : 0;
+     color:#FFF;
+     -webkit-animation: fadeout 3s linear 0s 1;
+   }
+
+    @-webkit-keyframes fadeout {
+      0%{
+        opacity:0;
+      }
+      5%{
+        opacity:1;
+      }
+      80% {
+        opacity:1;
+      }
+      100% {
+        opacity:0;
+      }
+    }
+
   </style>
   <body>
 
@@ -195,7 +219,7 @@
           <!-- <span class="icon icon-paste"></span>-->
           <!-- <span class="icon icon-paste"></span>-->
           <!-- </div> -->
-      <div>
+      <div style="position:relative;">
         <!-- <div id="editor" style="width:100%;height:100%;"></div>  -->
         <div id="editor" style="position:fixed; top:25px; bottom:25px;"></div>
 
@@ -207,7 +231,7 @@
       </div>
     </div> 
     <div id="footer-fixed"> 
-        <span style="color:#FFF;">Powerd by Electron, Ace.js, jQuery, Node.js.</span> 
+      <span id="saveContainer" style="color:#FFF;"></span> 
     </div> 
 
 
@@ -225,7 +249,12 @@
   <script src="./lib/underscore.js"></script>
   <script>
     var electron = require('electron');
-    var minwind = electron.remote.require('./irodori');
+    var irodori = electron.remote.require('./irodori');
+
+    // irodori.getHomeDirPath();
+    // irodori.writeToFile('c:/irodori/log.txt', "content", null);
+    // irodori.foo();
+
     // window.jQuery = window.$ = require('jquery');
 
     var tbCmd = $("#tbCmd");
@@ -243,9 +272,10 @@
     var lastClip = "";
     var clips = [""];
     var clipIndex = 0;
+    var saveTimer = null;
 
     function observeClip() {
-      // minwind.getClipboard(function(clip) {
+      // irodori.getClipboard(function(clip) {
       //   var cliptext = $("#nowClips").val(clip);
       //   if(lastClip !== clip) {
       //     lastClip = clip;
@@ -259,13 +289,43 @@
 
     // setInterval("observeClip()", 500);
 
+    var editor = null;
+
+    function getContent() {
+      return editor.getValue();
+    }
+
+    function formatDateTime(d) {
+        var y = d.getFullYear();
+        var m = d.getMonth() + 1;
+        var dd = d.getDate();
+        var hh = d.getHours();
+        var mm = d.getMinutes();
+        var ss = d.getSeconds();
+        var y0 = ('0000' + y).slice(-4);
+        var m0 = ('00' + m).slice(-2);
+        var d0 = ('00' + dd).slice(-2);
+        var hx = ('00' + hh).slice(-2);
+        var mx = ('00' + mm).slice(-2);
+        var sx = ('00' + ss).slice(-2);
+        return y0 + "/" + m0 + "/" + d0 + " " + hx + ":" + mx + ":" + sx  ;
+    }
+
     $(document).ready(function() {
 
-      var editor = ace.edit("editor");
+      editor = ace.edit("editor");
       // editor.setTheme("ace/theme/github");
       //editor.setTheme("ace/theme/twilight");
       editor.session.setMode("ace/mode/markdown");
-      editor.setKeyboardHandler("ace/keyboard/vim");
+      // editor.setKeyboardHandler("ace/keyboard/vim");
+
+      irodori.readData(function(err,data) {
+        if(err) {
+          editor.setValue("", -1);
+        } else {
+          editor.setValue(data, -1);
+        }
+      });
 
 
       refocus();
@@ -274,7 +334,33 @@
       // tbCmd.blur(refocus);
 
 
+      $(window).on("beforeunload",function(e){
+          irodori.writeData(getContent(), function() {});
+      });
+
+
       $(document).keyup(function(e) {
+
+        if(saveTimer) {
+          clearTimeout(saveTimer);
+        }
+        console.log("save queued");
+        saveTimer = setTimeout(function() {
+          irodori.writeData(getContent(), function() {});
+          console.log("saved");
+          // $("#span-saved").css("display", "none");
+          // $("#span-saved").css("display", "inline");
+          // $("#span-saved").text("SAVED : " + formatDateTime(new Date()));
+        
+          $(".out").remove();
+          $("#saveContainer").append('<span class="out">'+"SAVED : " + formatDateTime(new Date())+'</span>');
+          
+
+          // setTimeout(function() {
+          //   $("#span-saved").css("display", "none");
+          // }, 2900);
+        }, 1000);
+
         switch (e.which){
           case 38: //Enter
             clipIndex -= 1;
@@ -301,8 +387,8 @@
             break;
           // case 27: //Esc
           //   tbCmd.val("");
-          //   resetCandidate(minwind.getRecent());
-          //   minwind.hideWindow();
+          //   resetCandidate(irodori.getRecent());
+          //   irodori.hideWindow();
           //   break;
         }
       });
@@ -310,24 +396,24 @@
       tbCmd.keyup(function(e) {
         switch (e.which){
           case 13: //Enter
-            minwind.procInput(tbCmd.val());
+            irodori.procInput(tbCmd.val());
             tbCmd.val("");
-            resetCandidate(minwind.getRecent());
-            minwind.hideWindow();
+            resetCandidate(irodori.getRecent());
+            irodori.hideWindow();
             break;
           case 27: //Esc
             tbCmd.val("");
-            resetCandidate(minwind.getRecent());
-            minwind.hideWindow();
+            resetCandidate(irodori.getRecent());
+            irodori.hideWindow();
             break;
           default:
-            if(minwind.isDirectory(tbCmd.val())) {
-              minwind.getDirectoryLs(tbCmd.val(), function(path, err, files) {
+            if(irodori.isDirectory(tbCmd.val())) {
+              irodori.getDirectoryLs(tbCmd.val(), function(path, err, files) {
                 console.log(_.map(files, function(e) { return path + e;}));
                 resetCandidate(_.map(files, function(e) { return path + e;}));
               });
             } else {
-              resetCandidate(minwind.getRecent());
+              resetCandidate(irodori.getRecent());
             }
             break;
         }

@@ -24,7 +24,7 @@ app.on('ready', () => {
     // frame: false,
     // transparent: true,
     // resizable : false
-    closable:false
+    // closable:false
   });
 
   // Load html.
@@ -52,6 +52,8 @@ app.on('ready', () => {
   tray.on("click", function () {
     showWindow();
   });
+
+  ensureDirectory(getHomeDirPath() + '/.irodori', null);
 });
 
 app.on('will-quit', function () {
@@ -252,6 +254,74 @@ function getDirectoryLs(path, after) {
   return ls;
 }
 
+function writeToFile(filepath, content, after) {
+  var fs = require('fs');
+  fs.writeFile(filepath, content , function (err) {
+    console.log(err);
+    if(after) {
+      after(err);
+    }
+  });
+}
+
+function getHomeDirPath() {
+  var path = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
+  console.log(path);
+  return path;
+}
+
+function createDirectory(dirpath, after) {
+  var fs = require('fs');
+  fs.mkdir(dirpath, function (err) {
+    console.log(err);
+    if(after) {
+      after(err);
+    }
+  });
+}
+
+function ensureDirectory(dirpath, after) {
+  var fs = require("fs");
+  var path = require("path");
+  fs.access(dirpath, fs.constants.R_OK | fs.constants.W_OK, function(error) {
+    if (error) {
+      if (error.code === "ENOENT") {
+        fs.mkdirSync(dirpath);
+      } else {
+        return;
+      }
+    }
+   
+    if(after) {
+      after(error);
+    }
+  });
+}
+
+function getDataFilePath() {
+  return getHomeDirPath() + "/.irodori/irodori-data.txt";
+}
+
+function writeData(content) {
+  var path = getDataFilePath();
+  writeToFile(path, content, function(err) {
+    console.log(err);
+  });
+}
+
+function readData(after) {
+  var fs = require("fs");
+  fs.readFile(getDataFilePath(), "utf8", (error, data) => {
+    if (error) {
+      console.log(error.message);
+    }
+
+    if(after) {
+      after(error, data);
+    }
+  });
+}
+
 exports.procInput = procInput;
 
 exports.isDirectory = isDirectory;
@@ -277,6 +347,21 @@ exports.addRecent = addRecent;
 exports.getRecent = getRecent;
 
 exports.getDirectoryLs = getDirectoryLs;
+
+exports.writeToFile = writeToFile;
+
+exports.getHomeDirPath = getHomeDirPath;
+
+exports.foo = function () { console.log("foo!"); }
+
+exports.createDirectory = createDirectory;
+
+exports.writeData = writeData;
+
+exports.readData = readData;
+
+
+
 
 const clipboardy = require('clipboardy');
 
