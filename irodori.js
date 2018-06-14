@@ -24,7 +24,7 @@ app.on('ready', () => {
     // frame: false,
     // transparent: true,
     // resizable : false
-    // closable:false
+    closable:false
   });
 
   // Load html.
@@ -133,10 +133,12 @@ function getUserConfig(key) {
 
 function hideWindow() {
   wnd.hide();
+  //wnd.minimize();
 }
 
 function showWindow() {
   wnd.show();
+  //wnd.restore();
 }
 
 function isCmd(str) {
