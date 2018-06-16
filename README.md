@@ -26,9 +26,11 @@ irodori supports JavaScript execution.
 2. Press Ctrl + J to evaluate, 
    press Ctrl + Shift + J to evaluate and write result.
 
-### Show and hide.
+### Show and hide, exit
 
 Press Ctrl + Up to toggle show and hide window.
+
+Press Alt + F4 to exit.
 
 ## Issues and TODOs
 
@@ -36,7 +38,7 @@ Press Ctrl + Up to toggle show and hide window.
 * TODO : Support tab edit.
 * TODO : Support manual file save and open.
 * TODO : Support data backup.
-* Issue : Editor overwrapped by footer.
+* Issue : Editor section overwrapped by footer.
 
 ## For Developer 
 
