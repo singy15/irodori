@@ -136,6 +136,15 @@
      -webkit-animation: fadeout 3s linear 0s 1;
    }
 
+   .out_script{
+     width: 200px;
+     height: 200px;
+     font-size:0.8em;
+     opacity : 0;
+     color:#FFF;
+     -webkit-animation: fadeout 3s linear 0s 1;
+   }
+
     @-webkit-keyframes fadeout {
       0%{
         opacity:0;
@@ -195,8 +204,17 @@
         <tr>
           <td><img border="0" src="./img/irodori-icon.ico" width="16" height="16" alt="img" style="vertical-align:middle"></td> 
           <td><span style="color:#FFF">irodori</span></td> 
+          <td width="20px"></td> 
+          <td>
+            <select id="inputMode" style="font-size:0.8em; background-color:#444; color:#FFF">
+              <option value="normal">Normal</option>
+              <option value="vim">Vim</option>
+              <option value="emacs">Emacs</option>
+            </select>
+          </td>
         </tr> 
       </table> 
+
     </div> 
     <div id="body-bk"> 
       <!-- <div style="position:fixed!important;width:50px;height:100%;background-color:#AAA;padding:0px;margin:0px;"> -->
@@ -231,15 +249,10 @@
       </div>
     </div> 
     <div id="footer-fixed"> 
-      <span id="saveContainer" style="color:#FFF;"></span> 
+      <span id="outEval" style="color:#FFF;">&nbsp;</span>
+      <span id="outSave" style="color:#FFF;"></span> 
+      <iframe id="sandbox" src="./sandbox.html" style="display:none"></iframe>
     </div> 
-
-
-
-
-
-
-
 
 
 
@@ -311,6 +324,38 @@
         return y0 + "/" + m0 + "/" + d0 + " " + hx + ":" + mx + ":" + sx  ;
     }
 
+    var someContext = {};
+
+    function compileCode (src) {
+      src = 'with (sandbox) {' + src + '}'
+      return new Function('sandbox', src)
+    }
+
+    function subContext () {}
+
+    var sc = new subContext();
+
+    function safeEval(script,after) {
+      iframe = document.getElementById("sandbox");
+      iframe.contentWindow.___safeEval___(script,
+        function(result,err) { 
+          if(err) {
+            $(".out_script").remove();
+            $("#outEval").append('<span class="out_script icon icon-cancel-circle" style="color:#FAA">' + "" + '</span>');
+            console.log(err);
+          } else {
+            $(".out_script").remove();
+            $("#outEval").append('<span class="out_script icon icon-checkmark" style="color:#AFA">' + "" + '</span>');
+            console.log(result); 
+          }
+
+          if(after) {
+            after(result,err);
+          }
+        });
+      // console.log(result);
+    }
+
     $(document).ready(function() {
 
       editor = ace.edit("editor");
@@ -338,28 +383,73 @@
           irodori.writeData(getContent(), function() {});
       });
 
+      $(document).keydown(function(e) {
+        if((e.keyCode == 74) && (e.ctrlKey) && !(e.shiftKey)) {
+          var script = editor.getSelectedText();
+          console.log("> " + script);
 
-      $(document).keyup(function(e) {
+          safeEval(script);
+        }
 
+        if((e.keyCode == 74) && (e.ctrlKey) && (e.shiftKey)) {
+          var script = editor.getSelectedText();
+          console.log("> " + script);
+
+          safeEval(script, function(result,err) {
+            var range = editor.getSelectionRange();
+            var endLine = range.end.row;
+            if(result) {
+              editor.session.insert({row:endLine + 1,column:0}, "> " + result.toString() + "\n");
+            } else {
+              editor.session.insert({row:endLine + 1,column:0}, "> " + err.toString() + "\n");
+            }
+          });
+        }
+      });
+
+      editor.getSession().on('change', function() {
         if(saveTimer) {
           clearTimeout(saveTimer);
         }
-        console.log("save queued");
+        // console.log("save queued");
         saveTimer = setTimeout(function() {
           irodori.writeData(getContent(), function() {});
-          console.log("saved");
+          // console.log("saved");
           // $("#span-saved").css("display", "none");
           // $("#span-saved").css("display", "inline");
           // $("#span-saved").text("SAVED : " + formatDateTime(new Date()));
         
           $(".out").remove();
-          $("#saveContainer").append('<span class="out">'+"SAVED : " + formatDateTime(new Date())+'</span>');
+          $("#outSave").append('<span class="out">'+"SAVED : " + formatDateTime(new Date())+'</span>');
           
 
           // setTimeout(function() {
           //   $("#span-saved").css("display", "none");
           // }, 2900);
         }, 1000);
+      });
+
+      $(document).keyup(function(e) {
+
+        // if(saveTimer) {
+        //   clearTimeout(saveTimer);
+        // }
+        // // console.log("save queued");
+        // saveTimer = setTimeout(function() {
+        //   irodori.writeData(getContent(), function() {});
+        //   // console.log("saved");
+        //   // $("#span-saved").css("display", "none");
+        //   // $("#span-saved").css("display", "inline");
+        //   // $("#span-saved").text("SAVED : " + formatDateTime(new Date()));
+        // 
+        //   $(".out").remove();
+        //   $("#outSave").append('<span class="out">'+"SAVED : " + formatDateTime(new Date())+'</span>');
+        //   
+
+        //   // setTimeout(function() {
+        //   //   $("#span-saved").css("display", "none");
+        //   // }, 2900);
+        // }, 1000);
 
         switch (e.which){
           case 38: //Enter
@@ -416,6 +506,18 @@
               resetCandidate(irodori.getRecent());
             }
             break;
+        }
+      });
+
+      $("#inputMode").change(function(e) {
+        console.log("input mode changed");
+        var val = $("#inputMode").val();
+        if(val === "vim") {
+          editor.setKeyboardHandler("ace/keyboard/vim");
+        } else if(val === "emacs") {
+          editor.setKeyboardHandler("ace/keyboard/emacs");
+        } else {
+          editor.setKeyboardHandler(null);
         }
       });
     });

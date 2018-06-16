@@ -322,6 +322,15 @@ function readData(after) {
       after(error, data);
     }
   });
+
+  // sync version
+  // var content = "";
+  // try {
+  //   content = fs.readFileSync(getDataFilePath(), "utf8");
+  //   after(undefined, content);
+  // } catch(ex) {
+  //   after(ex, content);
+  // }
 }
 
 exports.procInput = procInput;

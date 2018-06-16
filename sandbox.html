@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <span id="test">iframe sandbox</span>
+  </body>
+  <script>
+    var global = this;
+    ___safeEval___ = function(script,after) {
+      var result = undefined;
+      try {
+        result = eval.call(global, script);
+        after(result,undefined);
+      } catch(ex) {
+        after(result,ex);
+      }
+    }
+  </script>
+</html>
+
