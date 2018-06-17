@@ -154,6 +154,11 @@ function parseCmd(str) {
   return {cmd : cmd, param : param};
 }
 
+function execProc(cmd, after) {
+  // startProc(cmd);
+  execSimpleCmd(cmd, after);
+}
+
 function execCmd(compiled) {
   var cmd = compiled.cmd;
   var param = compiled.param;
@@ -193,6 +198,28 @@ function isDirectory(filepath) {
     return false;
   }
   return fs.existsSync(filepath) && fs.statSync(filepath).isDirectory();
+}
+
+function execSimpleCmd(cmd, after) {
+  const exec = require('child_process').exec;
+
+  // var cmdStr = "start \"\" \"" + cmd + "\"";
+  // var cmdStr = 'cmd /c "'+cmd+'"';
+  var newlineReplaced = cmd.replace(/\r?\n/g," & ");
+  // var cmdStr = 'start "" cmd /k "'+ cmd +'"';
+  var cmdStr = 'start "" cmd /c "'+ newlineReplaced +'"';
+  console.log(cmdStr);
+  exec(cmdStr, (err, stdout, stderr) => {
+    if (err) { 
+      console.log("==========> error");
+      console.log(err); 
+    }
+    console.log(stdout);
+
+    if(after) {
+      after(err,stdout,stderr);
+    }
+  });
 }
 
 function startProc(cmd) {
@@ -371,7 +398,7 @@ exports.writeData = writeData;
 
 exports.readData = readData;
 
-
+exports.execProc = execProc;
 
 
 const clipboardy = require('clipboardy');

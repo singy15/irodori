@@ -384,6 +384,53 @@
       });
 
       $(document).keydown(function(e) {
+        if((e.keyCode == 13) && (e.ctrlKey) && !(e.shiftKey)) {
+          var script = editor.getSelectedText();
+          console.log("$ " + script);
+
+          // TODO : launch
+          // irodori.execProc(script);
+          irodori.execProc(script, function(err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+
+            // var range = editor.getSelectionRange();
+            // var endLine = range.end.row;
+            // if(result) {
+            //   editor.session.insert({row:endLine + 1,column:0}, "> " + result.toString() + "\n");
+            // } else {
+            //   editor.session.insert({row:endLine + 1,column:0}, "> " + err.toString() + "\n");
+            // }
+
+          });
+        }
+        if((e.keyCode == 13) && (e.ctrlKey) && (e.shiftKey)) {
+          var script = editor.getSelectedText();
+          console.log("$ " + script);
+
+          // TODO : launch
+          // irodori.execProc(script);
+          irodori.execProc(script, function(err, stdout, stderr) {
+            console.log(err);
+            console.log(stdout);
+            console.log(stderr);
+
+            var range = editor.getSelectionRange();
+            var endLine = range.end.row;
+
+            editor.session.insert({row:endLine + 1,column:0}, "" + stdout.toString() + "\n");
+            editor.session.insert({row:endLine + 1,column:0}, "" + stderr.toString() + "\n");
+
+            if(stdout) {
+              editor.session.insert({row:endLine + 1,column:0}, "" + stdout.toString() + "\n");
+            }
+            // else {
+            //   editor.session.insert({row:endLine + 1,column:0}, "> " + err.toString() + "\n");
+            // }
+
+          });
+        }
+
         if((e.keyCode == 74) && (e.ctrlKey) && !(e.shiftKey)) {
           var script = editor.getSelectedText();
           console.log("> " + script);
