@@ -24,7 +24,7 @@ app.on('ready', () => {
     // frame: false,
     // transparent: true,
     // resizable : false
-    closable:false
+    // closable:false
   });
 
   // Load html.
