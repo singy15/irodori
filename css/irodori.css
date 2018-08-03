@@ -202,8 +202,10 @@
       cursor : pointer;
       /*font-weight : bold;*/
       opacity : 1.0;
-      margin : 0px;
+      margin : 1px;
       padding : 0px;
+      border-top-color: #DDD;
+      border-left-color: #DDD;
     }
 
     .span-button:active {
@@ -214,8 +216,10 @@
       cursor : pointer;
       /*font-weight : bold;*/
       opacity : 1.0;
-      margin : 0px;
+      margin : 1px;
       padding : 0px;
+      border-top-color: #DDD;
+      border-left-color: #DDD;
     }
 
 

@@ -428,8 +428,8 @@
                 console.log("end proc", lines[i]);
             }
 
+            $(".span-button").remove();
             _.mapObject(fns,function(val,key) {
-                $(".span-button").remove();
                 var elem = $('<span class="span-button">'+key+'</span>');
                 elem.click(function() { 
                     console.log("[" + key + "] executed"); 
