@@ -222,4 +222,32 @@
       border-left-color: #DDD;
     }
 
+    .span-button-script {
+      color : #000;
+      background-color : #AAF;
+      font-size : 10px;
+      border : outset;
+      cursor : pointer;
+      /*font-weight : bold;*/
+      opacity : 1.0;
+      margin : 1px;
+      padding : 0px;
+      border-top-color: #DDD;
+      border-left-color: #DDD;
+    }
+
+    .span-button-script:active {
+      color : #000;
+      background-color : #AAF;
+      font-size : 10px;
+      border : inset;
+      cursor : pointer;
+      /*font-weight : bold;*/
+      opacity : 1.0;
+      margin : 1px;
+      padding : 0px;
+      border-top-color: #DDD;
+      border-left-color: #DDD;
+    }
+
 

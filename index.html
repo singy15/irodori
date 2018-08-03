@@ -405,35 +405,62 @@
             // var lines = text.split("\n");
             var lines = getContent().split("\n");
             var ex = new RegExp(/^\#shell\((.*)\)/);
+            var exSc = new RegExp(/^\#script\((.*)\)/);
             var exEnd = new RegExp(/^\#end/);
             var fns = {};
+            var fnsSc = {};
             var currentFn = null;
+            var isShell = null;
             for(var i = 0; i < lines.length; i+=1) {
                 var mt = lines[i].match(ex);
                 if(mt) {
                     console.log("hit", mt[1]);
                     currentFn = mt[1];
                     fns[currentFn] = "";
+                    isShell = true;
+                    continue;
+                }
+                var mtSc = lines[i].match(exSc);
+                if(mtSc) {
+                    console.log("hit", mtSc[1]);
+                    currentFn = mtSc[1];
+                    fnsSc[currentFn] = "";
+                    isShell = false;
                     continue;
                 }
                 var mtEnd = lines[i].match(exEnd);
                 if(mtEnd) {
                     currentFn = null;
+                  isShell = null;
                     continue;
                 }
                 if(currentFn) {
-                    fns[currentFn] = fns[currentFn] + lines[i];
+                    if(isShell) {
+                      fns[currentFn] = fns[currentFn] + lines[i];
+                    } else {
+                      fnsSc[currentFn] = fnsSc[currentFn] + lines[i];
+                    }
                     continue;
                 }
                 console.log("end proc", lines[i]);
             }
 
             $(".span-button").remove();
+            $(".span-button-script").remove();
             _.mapObject(fns,function(val,key) {
                 var elem = $('<span class="span-button">'+key+'</span>');
                 elem.click(function() { 
                     console.log("[" + key + "] executed"); 
                     irodori.execProc(val);
+                });
+                $("#footer-fixed-upper").append(elem);
+            });
+            _.mapObject(fnsSc,function(val,key) {
+                var elem = $('<span class="span-button-script">'+key+'</span>');
+                elem.click(function() { 
+                    console.log("[" + key + "] executed"); 
+                    //irodori.execProc(val);
+                    safeEval(val);
                 });
                 $("#footer-fixed-upper").append(elem);
             });
