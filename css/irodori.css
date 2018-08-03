@@ -206,6 +206,9 @@
       padding : 0px;
       border-top-color: #DDD;
       border-left-color: #DDD;
+      float:left;
+      height:8px;
+      line-height:8px;
     }
 
     .span-button:active {
@@ -220,6 +223,9 @@
       padding : 0px;
       border-top-color: #DDD;
       border-left-color: #DDD;
+      float:left;
+      height:10px;
+      line-height:8px;
     }
 
     .span-button-script {
@@ -234,6 +240,9 @@
       padding : 0px;
       border-top-color: #DDD;
       border-left-color: #DDD;
+      float:left;
+      height:8px;
+      line-height:8px;
     }
 
     .span-button-script:active {
@@ -248,6 +257,9 @@
       padding : 0px;
       border-top-color: #DDD;
       border-left-color: #DDD;
+      float:left;
+      height:8px;
+      line-height:8px;
     }
 
 
