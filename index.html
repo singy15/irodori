@@ -18,149 +18,7 @@
     <!-- <link rel="stylesheet" type="text/css" href="./css/w3.css"> -->
 
   </head>
-  <style>
-    html, body{
-        margin: 0;
-        padding: 0;
-        width:100%;
-        height:100%;
-        font-size: 0.9em;
-        font-family : "sans-serif";
-    }
-
-    .btn {
-      cursor : pointer;
-      /*font-size : small;*/
-      background-color : #888;
-      color : #FFF;
-      margin-bottom : 1px;
-      padding-left : 5px;
-    }
-
-    .btn a {
-      /*font-size : small;*/
-      color : #FFF;
-      text-decoration : none;
-    }
-
-    .sidebar {
-      height:100%;
-      width:200px;
-      background-color:#CCC;
-      position:fixed!important;
-      z-index:1;
-      overflow:auto
-    }
-
-    div#header-fixed
-    {
-        position: fixed;            /* ヘッダーの固定 */
-        top: 0px;                   /* 位置(上0px) */
-        left: 0px;                  /* 位置(右0px) */
-        width: 100%;                /* 横幅100%　*/
-        height: 25px;              /* 縦幅140px */
-        padding:0px;       /* 上10px、下20pxをあける */
-        background-color:#444;     /* 背景色(黒) */
-    }
-
-    div#body-bk{
-        /*padding:25px 0 25px 0;*/    /* 上下に160pxを余白を取る */
-      position: fixed;
-        top : 25px;
-        bottom : 25px;
-        left : 0px;
-        right : 0px;
-    }
-     
-
-    div#footer-fixed
-    {
-        position: fixed;            /* フッターの固定 */
-        bottom: 0px;                /* 位置(下0px) */
-        left: 0px;                  /* 位置(左0px) */
-        width: 100%;                /* 横幅100%　*/
-        height: 25px;              /* 縦幅140px */
-        background-color:#444;     /* 背景色(黒) */
-    }
-     
-
-
-
-    .ui-autocomplete {
-        max-height: 120px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding-right: 20px;
-    }
-
-    input {
-      font-size : 0.7em;
-      /*background-color : #000;*/
-      /*color : #fff;*/
-    }
-
-    body {
-      background-color: #333;
-      color: #fff;
-      margin : 0px;
-      padding : 0px;
-      /* -webkit-user-select: none; */
-    }
-
-    img {
-      -webkit-app-region: drag;
-    }
-
-    span {
-      color : black;
-    }
-
-    textarea {
-      resize : none;
-      /* font-family: "ＭＳ ゴシック",sans-serif; */
-      font-size : 0.7em;
-    }
-
-    #editor {
-        width : 100%;
-        /*height : 400px;*/
-        height : 99%;
-   }
-
-   .out{
-     width: 200px;
-     height: 200px;
-     font-size:0.8em;
-     opacity : 0;
-     color:#FFF;
-     -webkit-animation: fadeout 3s linear 0s 1;
-   }
-
-   .out_script{
-     width: 200px;
-     height: 200px;
-     font-size:0.8em;
-     opacity : 0;
-     color:#FFF;
-     -webkit-animation: fadeout 3s linear 0s 1;
-   }
-
-    @-webkit-keyframes fadeout {
-      0%{
-        opacity:0;
-      }
-      5%{
-        opacity:1;
-      }
-      80% {
-        opacity:1;
-      }
-      100% {
-        opacity:0;
-      }
-    }
-
-  </style>
+    <link rel="stylesheet" type="text/css" href="./css/irodori.css">
   <body>
 
 
@@ -199,24 +57,24 @@
     <!--  overflow:auto -->
 
 
-    <div id="header-fixed">
+    <div id="header-fixed" style="display:none">
       <table>
         <tr>
           <td><img border="0" src="./img/irodori-icon.ico" width="16" height="16" alt="img" style="vertical-align:middle"></td> 
           <td><span style="color:#FFF">irodori</span></td> 
           <td width="20px"></td> 
           <td>
-            <select id="inputMode" style="font-size:0.8em; background-color:#444; color:#FFF">
-              <option value="normal">Normal</option>
-              <option value="vim">Vim</option>
-              <option value="emacs">Emacs</option>
-            </select>
+            <!--<select id="inputMode" style="font-size:0.8em; background-color:#444; color:#FFF">-->
+            <!--<option value="normal">Normal</option>-->
+            <!--<option value="vim">Vim</option>-->
+            <!--<option value="emacs">Emacs</option>-->
+            <!--</select>-->
           </td>
         </tr> 
       </table> 
 
     </div> 
-    <div id="body-bk"> 
+    <!--<div id="body-bk"> -->
       <!-- <div style="position:fixed!important;width:50px;height:100%;background-color:#AAA;padding:0px;margin:0px;"> -->
         <!-- <span class="icon icon-home"></span> -->
         <!-- <span class="icon icon-pencil"></span>-->
@@ -237,18 +95,28 @@
           <!-- <span class="icon icon-paste"></span>-->
           <!-- <span class="icon icon-paste"></span>-->
           <!-- </div> -->
-      <div style="position:relative;">
+          <!--<div style="position:relative;">-->
         <!-- <div id="editor" style="width:100%;height:100%;"></div>  -->
-        <div id="editor" style="position:fixed; top:25px; bottom:25px;"></div>
+        <!--<div id="editor" style="position:fixed; top:25px; bottom:25px;"></div>-->
+        <div id="editor" style=""></div>
 
         <!-- <span id="clipIndex" style="display:none"></span><br>  -->
         <!-- <input type="text" id="tbCmd" style="box-sizing:border-box;width:100%;height:20px; display:none"/>  -->
         <!-- <textarea style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none"></textarea><br>  -->
         <!-- <textarea id="nowClips" style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none;"></textarea><br>  -->
         <!-- <textarea id="clips" style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none;"></textarea>  -->
-      </div>
+        <!--</div>-->
+        <!--</div> -->
+
+    <div id="footer-fixed-upper"> 
     </div> 
+
     <div id="footer-fixed"> 
+      <select id="inputMode" style="font-size:10px; background-color:#444; color:#FFF">
+      <option value="normal">Normal</option>
+      <option value="vim">Vim</option>
+      <option value="emacs">Emacs</option>
+      </select>
       <span id="outEval" style="color:#FFF;">&nbsp;</span>
       <span id="outSave" style="color:#FFF;"></span> 
       <iframe id="sandbox" src="./sandbox.html" style="display:none"></iframe>
@@ -261,6 +129,7 @@
   <!-- <script src="./lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script> -->
   <script src="./lib/underscore.js"></script>
   <script>
+    var global = this;
     var electron = require('electron');
     var irodori = electron.remote.require('./irodori');
 
@@ -356,13 +225,47 @@
       // console.log(result);
     }
 
+    function unsafeEval(script, after) {
+
+
+    //___safeEval___ = function(script,after) {
+    //  var result = undefined;
+    //  try {
+    //    result = eval.call(global, script);
+    //    after(result,undefined);
+    //  } catch(ex) {
+    //    after(result,ex);
+    //  }
+    //}
+
+      var result = undefined;
+      try {
+        // result = eval.call(global, script);
+        result = eval.call(global,script);
+        if(after) {
+          after(result,undefined);
+        }
+      } catch(ex) {
+        if(after) {
+          after(result,ex);
+        }
+      }
+    }
+
     $(document).ready(function() {
 
       editor = ace.edit("editor");
-      // editor.setTheme("ace/theme/github");
+      //editor.setTheme("ace/theme/github");
       //editor.setTheme("ace/theme/twilight");
+      //editor.setTheme("ace/theme/monokai");
       editor.session.setMode("ace/mode/markdown");
+      //editor.session.setMode("ace/mode/lisp");
       // editor.setKeyboardHandler("ace/keyboard/vim");
+
+      editor.setOptions({
+        fontFamily: "ＭＳ ゴシック",
+        fontSize: "12px"
+      });
 
       irodori.readData(function(err,data) {
         if(err) {
@@ -452,6 +355,29 @@
             }
           });
         }
+
+        if((e.keyCode == 71) && (e.ctrlKey) && !(e.shiftKey)) {
+          var script = editor.getSelectedText();
+          console.log("> " + script);
+
+          unsafeEval(script);
+        }
+
+        if((e.keyCode == 71) && (e.ctrlKey) && (e.shiftKey)) {
+          var script = editor.getSelectedText();
+          console.log("> " + script);
+
+          unsafeEval(script, function(result,err) {
+            var range = editor.getSelectionRange();
+            var endLine = range.end.row;
+            if(result) {
+              editor.session.insert({row:endLine + 1,column:0}, "> " + result.toString() + "\n");
+            } else {
+              editor.session.insert({row:endLine + 1,column:0}, "> " + err.toString() + "\n");
+            }
+          });
+        }
+
       });
 
       editor.getSession().on('change', function() {
@@ -469,6 +395,51 @@
           $(".out").remove();
           $("#outSave").append('<span class="out">'+"SAVED : " + formatDateTime(new Date())+'</span>');
           
+
+
+            // var text = "";
+            // text += "#shell(foo)\n";
+            // text += "start notepad\n";
+            // text += "#end";
+
+            // var lines = text.split("\n");
+            var lines = getContent().split("\n");
+            var ex = new RegExp(/^\#shell\((.*)\)/);
+            var exEnd = new RegExp(/^\#end/);
+            var fns = {};
+            var currentFn = null;
+            for(var i = 0; i < lines.length; i+=1) {
+                var mt = lines[i].match(ex);
+                if(mt) {
+                    console.log("hit", mt[1]);
+                    currentFn = mt[1];
+                    fns[currentFn] = "";
+                    continue;
+                }
+                var mtEnd = lines[i].match(exEnd);
+                if(mtEnd) {
+                    currentFn = null;
+                    continue;
+                }
+                if(currentFn) {
+                    fns[currentFn] = fns[currentFn] + lines[i];
+                    continue;
+                }
+                console.log("end proc", lines[i]);
+            }
+
+            _.mapObject(fns,function(val,key) {
+                $(".span-button").remove();
+                var elem = $('<span class="span-button">'+key+'</span>');
+                elem.click(function() { 
+                    console.log("[" + key + "] executed"); 
+                    irodori.execProc(val);
+                });
+                $("#footer-fixed-upper").append(elem);
+            });
+
+
+
 
           // setTimeout(function() {
           //   $("#span-saved").css("display", "none");
