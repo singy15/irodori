@@ -331,9 +331,19 @@ function getDataFilePath() {
   return getHomeDirPath() + "/.irodori/irodori-data.txt";
 }
 
+function getBackupFilePath() {
+  var d = new Date();
+  // var dateStr = d.getFullYear().toString() + ('00' + (d.getMonth()+1)).slice(-2) + (('00' + d.getDate()).slice(-2)) + ('00' + d.getHours()).slice(-2) + ('00' + d.getMinutes()).slice(-2);
+  var dateStr = d.getFullYear().toString() + ('00' + (d.getMonth()+1)).slice(-2) + (('00' + d.getDate()).slice(-2)) + ('00' + d.getHours()).slice(-2);
+  return getHomeDirPath() + "/.irodori/irodori-data.txt." + dateStr;
+}
+
 function writeData(content) {
   var path = getDataFilePath();
   writeToFile(path, content, function(err) {
+    console.log(err);
+  });
+  writeToFile(getBackupFilePath(), content, function(err) {
     console.log(err);
   });
 }
