@@ -1,7 +1,7 @@
   
     * {
-      font-family : "ＭＳ ゴシック";
-      font-size : 12px;
+      /*font-family : "ＭＳ ゴシック";*/
+      /*font-size : 12px;*/
     }
 
     html, body{
@@ -71,6 +71,8 @@
         height: 16px;              /* 縦幅140px */
         background-color:#444;     /* 背景色(黒) */
         padding-left:1px;
+        font-family : "ＭＳ ゴシック";
+        font-size : 12px;
     }
 
     div#footer-fixed-upper
@@ -157,6 +159,7 @@
      opacity : 0;
      color:#FFF;
      -webkit-animation: fadeout 3s linear 0s 1;
+      font-family : "ＭＳ ゴシック";
    }
 
    .out_script{
@@ -167,6 +170,7 @@
      opacity : 0;
      color:#FFF;
      -webkit-animation: fadeout 3s linear 0s 1;
+      font-family : "ＭＳ ゴシック";
    }
 
     @-webkit-keyframes fadeout {
@@ -209,6 +213,7 @@
       float:right;
       height:8px;
       line-height:8px;
+      font-family : "ＭＳ ゴシック";
     }
 
     .span-button:active {
@@ -226,6 +231,7 @@
       float:right;
       height:10px;
       line-height:8px;
+      font-family : "ＭＳ ゴシック";
     }
 
     .span-button-script {
@@ -243,6 +249,7 @@
       float:right;
       height:8px;
       line-height:8px;
+      font-family : "ＭＳ ゴシック";
     }
 
     .span-button-script:active {
@@ -260,6 +267,7 @@
       float:right;
       height:8px;
       line-height:8px;
+      font-family : "ＭＳ ゴシック";
     }
 
 
