@@ -5,111 +5,27 @@
     <meta charset="UTF-8">
     <title>irodori</title>
     <link rel="stylesheet" href="./css/style.css">
-    <!-- <link rel="stylesheet" type="text/css" href="./lib/jquery-easyui-1.5.5.2/themes/default/easyui.css"> -->
     <link rel="stylesheet" type="text/css" href="./lib/jquery-easyui-1.5.5.2/themes/metro-orange/easyui.css">
     <link rel="stylesheet" type="text/css" href="./lib/jquery-easyui-1.5.5.2/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="./lib/jquery-easyui-1.5.5.2/themes/color.css">
-    <!-- <link rel="stylesheet" href="./lib/jquery-ui-1.12.1.custom/jquery-ui.min.css"> -->
     <script type="text/javascript" src="./lib/jquery-easyui-1.5.5.2/jquery.min.js"></script>
     <script>window.$ = window.jQuery = require('jquery');</script>
     <script type="text/javascript" src="./lib/jquery-easyui-1.5.5.2/jquery.easyui.min.js"></script>
     <script src="./lib/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-
-    <!-- <link rel="stylesheet" type="text/css" href="./css/w3.css"> -->
-
   </head>
     <link rel="stylesheet" type="text/css" href="./css/irodori.css">
   <body>
-
-
-    <!-- <div id="sidebar" class="sidebar" style="width:40px;"> -->
-        <!--<span class="icon icon-circle-left" v-on:click="toggleDescriptionEdit"></span>-->
-        <!-- <h3 v-show="sidebarShown" class="w3-bar-item" style="display:inline"><span class="icon icon-stack" style="font-size:18px"></span>&nbsp;Stak</h3>-->
-        <!-- <span v-show="sidebarShown" v-on:click="toggleSidebar" class="icon icon-circle-left" style="float:right;padding:10px;font-size:large;cursor : pointer;"></span>-->
-        <!-- <span v-show="!sidebarShown" v-on:click="toggleSidebar" class="icon icon-circle-right" style="float:right;padding:10px;font-size:large;cursor : pointer;"></span>-->
-        <!-- <a v-show="sidebarShown" href="/view/dashboard" class="w3-bar-item w3-button">Dashboard</a>-->
-        <!-- <a v-show="sidebarShown" href="/view/solutions" class="w3-bar-item w3-button">Solutions</a>-->
-        <!-- <a v-show="sidebarShown" href="/view/tasks" class="w3-bar-item w3-button">Tasks</a>-->
-        <!-- <a v-show="sidebarShown" href="/view/workplan" class="w3-bar-item w3-button">Workplan</a>-->
-        <!-- <a v-show="sidebarShown" href="/view/users" class="w3-bar-item w3-button">Users</a>-->
-    <!-- </div> -->
-
-
-    <!-- <div id="pageContent" style="margin-left:40px"> -->
-    <!--   <div class="w3-container w3-teal"> -->
-    <!--   <table> -->
-    <!--     <tr> -->
-    <!--       <td><img border="0" src="./img/irodori-icon.ico" width="16" height="16" alt="img" style="vertical-align:middle"></td> -->
-    <!--       <td><span style="color:#FFF">irodori</span></td> -->
-    <!--     </tr> -->
-    <!--   </table> -->
-    <!--   </div> -->
-    <!--   <div class="w3-container"> -->
-    <!--     <span style="color:#FFF;">asdf</span> -->
-    <!--   </div> -->
-    <!-- </div> -->
-
-    <!--  height:100%; -->
-    <!--  width:200px; -->
-    <!--  background-color:#CCC; -->
-    <!--  position:fixed!important; -->
-    <!--  z-index:1; -->
-    <!--  overflow:auto -->
-
-
     <div id="header-fixed" style="display:none">
       <table>
         <tr>
           <td><img border="0" src="./img/irodori-icon.ico" width="16" height="16" alt="img" style="vertical-align:middle"></td> 
           <td><span style="color:#FFF">irodori</span></td> 
           <td width="20px"></td> 
-          <td>
-            <!--<select id="inputMode" style="font-size:0.8em; background-color:#444; color:#FFF">-->
-            <!--<option value="normal">Normal</option>-->
-            <!--<option value="vim">Vim</option>-->
-            <!--<option value="emacs">Emacs</option>-->
-            <!--</select>-->
-          </td>
         </tr> 
       </table> 
-
     </div> 
-    <!--<div style="position:fixed;width:100px;height:100%;z-index:1000;background-color:#CCC">-->
-    <!--  asdfasdf-->
-    <!--</div>-->
-    <!--<div id="body-bk"> -->
-      <!-- <div style="position:fixed!important;width:50px;height:100%;background-color:#AAA;padding:0px;margin:0px;"> -->
-        <!-- <span class="icon icon-home"></span> -->
-        <!-- <span class="icon icon-pencil"></span>-->
-        <!-- <span class="icon icon-file-text"></span><span>MEMO</span> -->
 
-        <!-- <div class="btn">MEMO</div> -->
-        <!-- <div class="btn">CLIP</div> -->
-        <!-- <div class="btn">DIFF</div> -->
-
-        <!-- <span class="icon icon-file-empty"></span>-->
-          <!-- <span class="icon icon-paste"></span>-->
-
-          <!-- <span class="icon icon-paste"></span>-->
-          <!-- <span class="icon icon-clipboard"></span>-->
-          <!-- <span class="icon icon-command"></span>-->
-          <!-- <span class="icon icon-terminal"></span>-->
-          <!-- <span class="icon icon-paste"></span>-->
-          <!-- <span class="icon icon-paste"></span>-->
-          <!-- <span class="icon icon-paste"></span>-->
-          <!-- </div> -->
-          <!--<div style="position:relative;">-->
-        <!-- <div id="editor" style="width:100%;height:100%;"></div>  -->
-        <!--<div id="editor" style="position:fixed; top:25px; bottom:25px;"></div>-->
-        <div id="editor" style=""></div>
-
-        <!-- <span id="clipIndex" style="display:none"></span><br>  -->
-        <!-- <input type="text" id="tbCmd" style="box-sizing:border-box;width:100%;height:20px; display:none"/>  -->
-        <!-- <textarea style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none"></textarea><br>  -->
-        <!-- <textarea id="nowClips" style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none;"></textarea><br>  -->
-        <!-- <textarea id="clips" style="box-sizing:border-box;width:100%;height:100px;resize:none; display:none;"></textarea>  -->
-        <!--</div>-->
-        <!--</div> -->
+    <div id="editor" style=""></div>
 
     <div id="footer-fixed-upper"></div> 
 
@@ -125,51 +41,16 @@
       <iframe id="sandbox" src="./sandbox.html" style="display:none"></iframe>
     </div> 
   </body>
-  <!-- <script src="./lib/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script> -->
-  <!-- <script src="./lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script> -->
   <script src="./lib/underscore.js"></script>
   <script>
     var global = this;
     var electron = require('electron');
     var irodori = electron.remote.require('./irodori');
 
-    // irodori.getHomeDirPath();
-    // irodori.writeToFile('c:/irodori/log.txt', "content", null);
-    // irodori.foo();
-
-    // window.jQuery = window.$ = require('jquery');
-
-    var tbCmd = $("#tbCmd");
-
-    function refocus() {
-      // tbCmd.focus();
-    }
-
-    function resetCandidate(candidate) {
-      // tbCmd.autocomplete({
-      //   source : candidate
-      // });
-    }
-
     var lastClip = "";
     var clips = [""];
     var clipIndex = 0;
     var saveTimer = null;
-
-    function observeClip() {
-      // irodori.getClipboard(function(clip) {
-      //   var cliptext = $("#nowClips").val(clip);
-      //   if(lastClip !== clip) {
-      //     lastClip = clip;
-      //     clips.unshift(clip);
-      //     if(clips.length > 10) {
-      //       clips.pop();
-      //     }
-      //   }
-      // });
-    }
-
-    // setInterval("observeClip()", 500);
 
     var editor = null;
 
@@ -222,22 +103,9 @@
             after(result,err);
           }
         });
-      // console.log(result);
     }
 
     function unsafeEval(script, after) {
-
-
-    //___safeEval___ = function(script,after) {
-    //  var result = undefined;
-    //  try {
-    //    result = eval.call(global, script);
-    //    after(result,undefined);
-    //  } catch(ex) {
-    //    after(result,ex);
-    //  }
-    //}
-
       var result = undefined;
       try {
         // result = eval.call(global, script);
@@ -253,14 +121,12 @@
     }
 
     $(document).ready(function() {
-
       editor = ace.edit("editor");
       //editor.setTheme("ace/theme/github");
       //editor.setTheme("ace/theme/twilight");
       //editor.setTheme("ace/theme/monokai");
       editor.session.setMode("ace/mode/markdown");
       //editor.session.setMode("ace/mode/lisp");
-      // editor.setKeyboardHandler("ace/keyboard/vim");
 
       editor.setOptions({
         fontFamily: "ＭＳ ゴシック",
@@ -280,11 +146,6 @@
       });
 
 
-      refocus();
-      resetCandidate();
-
-      // tbCmd.blur(refocus);
-
 
       $(window).on("beforeunload",function(e){
           irodori.writeData(getContent(), function() {});
@@ -298,6 +159,7 @@
           // TODO : launch
           // irodori.execProc(script);
           irodori.execProc(script, function(err, stdout, stderr) {
+          // irodori.execProcFile(script, function(err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
 
@@ -318,6 +180,7 @@
           // TODO : launch
           // irodori.execProc(script);
           irodori.execProc(script, function(err, stdout, stderr) {
+          // irodori.execProcFile(script, function(err, stdout, stderr) {
             console.log(err);
             console.log(stdout);
             console.log(stderr);
@@ -440,9 +303,9 @@
                 }
                 if(currentFn) {
                     if(isShell) {
-                      fns[currentFn] = fns[currentFn] + lines[i];
+                      fns[currentFn] = fns[currentFn] + lines[i] + "\n";
                     } else {
-                      fnsSc[currentFn] = fnsSc[currentFn] + lines[i];
+                      fnsSc[currentFn] = fnsSc[currentFn] + lines[i] + "\n";
                     }
                     continue;
                 }
@@ -456,6 +319,7 @@
                 elem.click(function() { 
                     console.log("[" + key + "] executed"); 
                     irodori.execProc(val);
+                    //irodori.execProcFile(val);
                 });
                 $("#footer-fixed-upper").append(elem);
             });
@@ -520,43 +384,17 @@
       });
 
 
-      $(document).keyup(function(e) {
-        switch (e.which){
-          case 13: //Enter
-            break;
-          // case 27: //Esc
-          //   tbCmd.val("");
-          //   resetCandidate(irodori.getRecent());
-          //   irodori.hideWindow();
-          //   break;
-        }
-      });
-
-      tbCmd.keyup(function(e) {
-        switch (e.which){
-          case 13: //Enter
-            irodori.procInput(tbCmd.val());
-            tbCmd.val("");
-            resetCandidate(irodori.getRecent());
-            irodori.hideWindow();
-            break;
-          case 27: //Esc
-            tbCmd.val("");
-            resetCandidate(irodori.getRecent());
-            irodori.hideWindow();
-            break;
-          default:
-            if(irodori.isDirectory(tbCmd.val())) {
-              irodori.getDirectoryLs(tbCmd.val(), function(path, err, files) {
-                console.log(_.map(files, function(e) { return path + e;}));
-                resetCandidate(_.map(files, function(e) { return path + e;}));
-              });
-            } else {
-              resetCandidate(irodori.getRecent());
-            }
-            break;
-        }
-      });
+      // $(document).keyup(function(e) {
+      //   switch (e.which){
+      //     case 13: //Enter
+      //       break;
+      //     // case 27: //Esc
+      //     //   tbCmd.val("");
+      //     //   resetCandidate(irodori.getRecent());
+      //     //   irodori.hideWindow();
+      //     //   break;
+      //   }
+      // });
 
       $("#inputMode").change(function(e) {
         console.log("input mode changed");

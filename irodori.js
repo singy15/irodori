@@ -182,6 +182,32 @@ function execProc(cmd, after) {
   execSimpleCmd(cmd, after);
 }
 
+function execProcFile(cmd, after) {
+  var scriptPath = getHomeDirPath() + "/.irodori/script.bat";
+
+
+  var cmds = cmd.replace(/\n/g,"\r\n");
+
+  writeToFile(scriptPath, cmds,  function(err) {
+    const exec = require('child_process').exec;
+
+    // var cmdStr = 'start "" cmd /c "'+ newlineReplaced +'"';
+    var cmdStr = 'start "" ' + scriptPath;
+    console.log(cmdStr);
+    exec(cmdStr, (err, stdout, stderr) => {
+      if (err) { 
+        console.log("==========> error");
+        console.log(err); 
+      }
+      console.log(stdout);
+
+      if(after) {
+        after(err,stdout,stderr);
+      }
+    });
+  });
+}
+
 function execCmd(compiled) {
   var cmd = compiled.cmd;
   var param = compiled.param;
@@ -440,6 +466,8 @@ exports.writeData = writeData;
 exports.readData = readData;
 
 exports.execProc = execProc;
+
+exports.execProcFile = execProcFile;
 
 exports.openDevTools = openDevTools;
 
