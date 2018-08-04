@@ -50,7 +50,7 @@ div#footer-fixed
 {
   position: fixed;
   bottom: 0px;
-  left: 0px;
+  left: 100px;
   width: 100%;
   height: 16px;
   background-color:#444;
@@ -63,9 +63,9 @@ div#footer-fixed-upper
 {
   position: fixed;
   bottom: 40px;
-  left: 50px;
+  left: 150px;
   right : 32px;
-  width: -webkit-calc(100% - 70px);
+  width: -webkit-calc(100% - 170px);
   background-color:transparent;
   padding-left:1px;
   z-index: 200;
@@ -115,8 +115,31 @@ textarea {
   resize : none;
 }
 
+.side-pallet {
+  position:fixed;
+  width:100px;
+  height:100%;
+  z-index:1000;
+  background-color:#555;
+}
+
+.side-item {
+  -webkit-box-sizing: border-box;
+  width : -webkit-calc(100% - 2px);
+  background-color : transparent;
+  border : solid 1px #CCC;
+  color : #FFF;
+  font-family : "ＭＳ ゴシック";
+  font-size:10px;
+  padding : 1px;
+  margin : 1px;
+  cursor : pointer;
+}
+
 #editor {
-  width : 100%;
+  position : fixed;
+  left : 100px;
+  width : -webkit-calc(100% - 100px);
   height : -webkit-calc(100% - 16px);
 }
 

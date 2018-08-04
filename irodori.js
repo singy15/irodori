@@ -370,6 +370,17 @@ function readData(after) {
   // }
 }
 
+function getFileList() {
+  var fs = require('fs');
+  fs.readdir(getHomeDirPath() + "/.irodori", function(err, files){
+      if (err) throw err;
+      var fileList = files.filter(function(file){
+          return fs.statSync(file).isFile() && /.*\.txt$/.test(file);
+      })
+      console.log(fileList);
+  });
+}
+
 exports.procInput = procInput;
 
 exports.isDirectory = isDirectory;
@@ -410,6 +421,7 @@ exports.readData = readData;
 
 exports.execProc = execProc;
 
+exports.getFileList = getFileList;
 
 const clipboardy = require('clipboardy');
 
