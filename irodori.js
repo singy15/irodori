@@ -6,6 +6,9 @@ const fs = require('fs');
 var __ = require('underscore');
 typeof __.each === 'function'
 
+const datafilePath = "/.irodori/";
+const datafileName = "irodori-data.txt";
+
 let wnd = null;
 
 app.on('ready', () => {
@@ -14,7 +17,6 @@ app.on('ready', () => {
     // useContentSize: true,
     width: 300, 
     height: 300,
-    // show: false,
     // show: false,
     show: true,
     // minimizable: false,
@@ -30,7 +32,28 @@ app.on('ready', () => {
   // Load html.
   wnd.loadURL('file://' + __dirname + '/index.html');
 
-  // wnd.setMenu(null);
+  wnd.setMenu(null);
+  // const templateMenu = [
+  //   {
+  //     label: 'General',
+  //     submenu: [
+  //       // {
+  //       //   label : "About",
+  //       //   click(item, focusedWindow){
+  //       //     alert("irodori");
+  //       //   }
+  //       // },
+  //       {
+  //         label : 'Open console',
+  //         click(item, focusedWindow){
+  //           wnd.webContents.openDevTools();
+  //         }
+  //       }
+  //     ]
+  //   }
+  // ];
+  // const menu = Menu.buildFromTemplate(templateMenu);
+  // Menu.setApplicationMenu(menu);
 
   wnd.on('closed', function() {
     exitApp();
@@ -328,14 +351,18 @@ function ensureDirectory(dirpath, after) {
 }
 
 function getDataFilePath() {
-  return getHomeDirPath() + "/.irodori/irodori-data.txt";
+  return getHomeDirPath() + datafilePath + datafileName;
 }
 
 function getBackupFilePath() {
-  var d = new Date();
-  // var dateStr = d.getFullYear().toString() + ('00' + (d.getMonth()+1)).slice(-2) + (('00' + d.getDate()).slice(-2)) + ('00' + d.getHours()).slice(-2) + ('00' + d.getMinutes()).slice(-2);
-  var dateStr = d.getFullYear().toString() + ('00' + (d.getMonth()+1)).slice(-2) + (('00' + d.getDate()).slice(-2)) + ('00' + d.getHours()).slice(-2);
-  return getHomeDirPath() + "/.irodori/irodori-data.txt." + dateStr;
+  var now = new Date();
+  var dateStr = now.getFullYear().toString() 
+    + ('00' + (now.getMonth()+1)).slice(-2) 
+    + (('00' + now.getDate()).slice(-2)) 
+    + ('00' + now.getHours()).slice(-2)
+    // + ('00' + now.getMinutes()).slice(-2)
+    ;
+  return getDataFilePath() + "." + dateStr + ".bak";
 }
 
 function writeData(content) {
@@ -368,6 +395,10 @@ function readData(after) {
   // } catch(ex) {
   //   after(ex, content);
   // }
+}
+
+function openDevTools() {
+  wnd.webContents.openDevTools();
 }
 
 exports.procInput = procInput;
@@ -410,6 +441,7 @@ exports.readData = readData;
 
 exports.execProc = execProc;
 
+exports.openDevTools = openDevTools;
 
 const clipboardy = require('clipboardy');
 

@@ -114,6 +114,7 @@
     <div id="footer-fixed-upper"></div> 
 
     <div id="footer-fixed"> 
+      <span id="btnDevTools" class="icon icon-power" style="color:#FFF;font-size:9px;margin-left:1px;cursor:pointer"></span>
       <select id="inputMode" style="font-size:10px; background-color:#444; color:#FFF">
       <option value="normal">Normal</option>
       <option value="vim">Vim</option>
@@ -272,6 +273,10 @@
         } else {
           editor.setValue(data, -1);
         }
+      });
+
+      $("#btnDevTools").click(function() {
+        irodori.openDevTools();
       });
 
 
