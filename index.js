@@ -7,6 +7,7 @@ var saveTimer = null;
 var editor = null;
 
 var footerUpper = $("#footer-fixed-upper");
+var buttonContainer = $("#button-container");
 var cmbInputMode = $("#inputMode");
 
 function getContent() {
@@ -75,23 +76,23 @@ function printShellOutput(err, stdout, stderr) {
   }
 }
 
-function createSpanButton(label, klass, onClick) {
-  var btn = $('<span class="'+ klass +'">'+ label +'</span>');
+function createSpanButton(label, klass, style, onClick) {
+  var btn = $('<span class="'+ klass +'" style="'+((style)? style : "")+'">'+ label +'</span>');
   btn.click(onClick);
   return btn;
 }
 
 function appendSpanButtonByFunction(fn) {
   if(fn.type === "sh") {
-    footerUpper.prepend(createSpanButton(fn.label, "span-button span-button-shell", function() {
+    buttonContainer.append(createSpanButton(fn.label, "span-button span-button-shell", fn.params, function() {
       irodori.execProc(fn.content);
     }));
   } else if(fn.type === "shf") {
-    footerUpper.prepend(createSpanButton(fn.label, "span-button span-button-shell", function() {
+    buttonContainer.append(createSpanButton(fn.label, "span-button span-button-shell", fn.params, function() {
       irodori.execProcFile(fn.content);
     }));
   } else if(fn.type === "js") {
-    footerUpper.prepend(createSpanButton(fn.label, "span-button span-button-script", function() {
+    buttonContainer.append(createSpanButton(fn.label, "span-button span-button-script", fn.params, function() {
       safeEval(fn.content);
     }));
   }
@@ -112,9 +113,9 @@ function onChangeInputMode(evnt) {
 }
 
 var syntax = [
-  {pattern : new RegExp(/^\#sh\((.*)\)$/), type : "function", data : {type : "sh"}},
-  {pattern : new RegExp(/^\#shf\((.*)\)$/), type : "function", data : {type : "shf"}},
-  {pattern : new RegExp(/^\#js\((.*)\)$/), type : "function", data : {type : "js"}},
+  {pattern : new RegExp(/^\#sh\((.*)\)(\[(.*)\])?$/), type : "function", data : {type : "sh"}},
+  {pattern : new RegExp(/^\#shf\((.*)\)(\[(.*)\])?$/), type : "function", data : {type : "shf"}},
+  {pattern : new RegExp(/^\#js\((.*)\)(\[(.*)\])?$/), type : "function", data : {type : "js"}},
   {pattern : new RegExp(/^\#end/), type : "end", data : null}
 ];
 
@@ -130,12 +131,12 @@ function parseLine(line) {
   return {line : line, matchedSyntax : null, match : null};
 }
 
-function createFunction(type, label) {
-  return { label : label, type : type, content : "" };
+function createFunction(type, label, params) {
+  return { label : label, type : type, content : "", params : params };
 }
 
 function createFunctionByParseResult(parseResult) {
-  return createFunction(parseResult.matchedSyntax.data.type, parseResult.match[1]);
+  return createFunction(parseResult.matchedSyntax.data.type, parseResult.match[1], parseResult.match[3]);
 }
 
 function clearButtons() {
@@ -151,6 +152,7 @@ function parseAndCreateButtons() {
   for(var i = 0; i < lines.length; i+=1) {
     var cur = lines[i];
     var parseResult = parseLine(cur);
+    console.log(parseResult);
     if(parseResult.matchedSyntax != null) {
       if(parseResult.matchedSyntax.type === "function") {
         fn = createFunctionByParseResult(parseResult);
@@ -166,10 +168,10 @@ function parseAndCreateButtons() {
     }
   }
 
-  // Delete buttons.
+  // Delete buttonContainer.
   clearButtons();
 
-  // Create buttons.
+  // Create buttonContainer.
   _.map(fns, appendSpanButtonByFunction);
 }
 
@@ -249,7 +251,7 @@ $(document).ready(function() {
       // Show notification.
       saveNotification();
 
-      // Parse and create buttons.
+      // Parse and create buttonContainer.
       parseAndCreateButtons();
     }, 1000);
   });

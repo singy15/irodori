@@ -132,7 +132,7 @@ div.ace_dialog,div.ace_dialog-bottom {
   padding : 0px;
   padding-left : 1px;
   padding-right : 1px;
-  float:right;
+  float:left;
   height:10px;
   line-height:11px;
   font-family : "ＭＳ ゴシック";
@@ -158,5 +158,10 @@ div.ace_dialog,div.ace_dialog-bottom {
 .icon-button {
   font-size:9px;
   cursor:pointer
+}
+
+.button-container {
+  height:100%;
+  float:right
 }
 
