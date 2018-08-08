@@ -125,7 +125,7 @@ div.ace_dialog,div.ace_dialog-bottom {
 }
 
 .span-button {
-  font-size : 11px;
+  font-size : 12px;
   border : solid 1px;
   cursor : pointer;
   margin : 1px;
@@ -133,8 +133,8 @@ div.ace_dialog,div.ace_dialog-bottom {
   padding-left : 1px;
   padding-right : 1px;
   float:left;
-  height:10px;
-  line-height:11px;
+  height:12px;
+  line-height:12px;
   font-family : "ＭＳ ゴシック";
   pointer-events : auto;
   font-weight : bold;

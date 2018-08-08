@@ -7,16 +7,25 @@
     <span id="test">iframe sandbox</span>
   </body>
   <script>
-    var global = this;
+    var irodori = window.parent;
+
+    irodori.api = {};
+    irodori.api.execProc = irodori.remote.execProc;
+    irodori.api.execProcFile = irodori.remote.execProcFile;
+    irodori.api.getSelectedText = irodori.getSelectedText;
+    irodori.api.writeToFile = irodori.remote.writeToFile;
+
+    var ___context___ = this;
     ___safeEval___ = function(script,after) {
       var result = undefined;
       try {
-        result = eval.call(global, script);
+        result = eval.call(___context___, script);
         after(result,undefined);
       } catch(ex) {
         after(result,ex);
       }
     }
+
   </script>
 </html>
 

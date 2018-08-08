@@ -1,6 +1,6 @@
 
 var electron = require('electron');
-var irodori = electron.remote.require('./irodori');
+var remote = electron.remote.require('./irodori');
 
 var context = this;
 var saveTimer = null;
@@ -76,25 +76,59 @@ function printShellOutput(err, stdout, stderr) {
   }
 }
 
-function createSpanButton(label, klass, style, onClick) {
-  var btn = $('<span class="'+ klass +'" style="'+((style)? style : "")+'">'+ label +'</span>');
-  btn.click(onClick);
+function jumpToFunction(label, type) {
+  editor.find({
+    regExp : true, 
+    needle : new RegExp('#'+type+'\\('+label+'\\)')
+  });
+}
+
+function createOnClickMod(label, type) {
+  return function() {
+    jumpToFunction(label,type);
+  };
+}
+
+function createSpanButton(label, klass, params, onClick, onClickMod) {
+  var btn = null;
+  if(params.html) {
+    btn = $('<span class="'+ klass +'" style="'+((params.style)? params.style : "")+'">'+ params.html +'</span>');
+  } else {
+    btn = $('<span class="'+ klass +'" style="'+((params.style)? params.style : "")+'">'+ label +'</span>');
+  }
+  btn.click(function(e) {
+    if(e.shiftKey) {
+      if(onClickMod) {
+        onClickMod();
+      }
+    } else {
+      onClick();
+    }
+  });
   return btn;
 }
 
 function appendSpanButtonByFunction(fn) {
   if(fn.type === "sh") {
     buttonContainer.append(createSpanButton(fn.label, "span-button span-button-shell", fn.params, function() {
-      irodori.execProc(fn.content);
-    }));
+      remote.execProc(fn.content);
+    },
+    createOnClickMod(fn.label, "sh")));
   } else if(fn.type === "shf") {
     buttonContainer.append(createSpanButton(fn.label, "span-button span-button-shell", fn.params, function() {
-      irodori.execProcFile(fn.content);
-    }));
+      remote.execProcFile(fn.content);
+    },
+    createOnClickMod(fn.label, "shf")));
   } else if(fn.type === "js") {
     buttonContainer.append(createSpanButton(fn.label, "span-button span-button-script", fn.params, function() {
       safeEval(fn.content);
-    }));
+    },
+    createOnClickMod(fn.label, "js")));
+  } else if(fn.type === "jsu") {
+    buttonContainer.append(createSpanButton(fn.label, "span-button span-button-script", fn.params, function() {
+      unsafeEval(fn.content);
+    },
+    createOnClickMod(fn.label, "jsu")));
   }
 }
 
@@ -113,9 +147,10 @@ function onChangeInputMode(evnt) {
 }
 
 var syntax = [
-  {pattern : new RegExp(/^\#sh\((.*)\)(\[(.*)\])?$/), type : "function", data : {type : "sh"}},
+  {pattern : new RegExp(/^\#sh\((.*)\)(\[(.*?)\])?(\[(.*?)\])?$/), type : "function", data : {type : "sh"}},
   {pattern : new RegExp(/^\#shf\((.*)\)(\[(.*)\])?$/), type : "function", data : {type : "shf"}},
   {pattern : new RegExp(/^\#js\((.*)\)(\[(.*)\])?$/), type : "function", data : {type : "js"}},
+  {pattern : new RegExp(/^\#jsu\((.*)\)(\[(.*)\])?$/), type : "function", data : {type : "jsu"}},
   {pattern : new RegExp(/^\#end/), type : "end", data : null}
 ];
 
@@ -136,7 +171,13 @@ function createFunction(type, label, params) {
 }
 
 function createFunctionByParseResult(parseResult) {
-  return createFunction(parseResult.matchedSyntax.data.type, parseResult.match[1], parseResult.match[3]);
+  return createFunction(
+    parseResult.matchedSyntax.data.type, 
+    parseResult.match[1], 
+    { 
+      style : parseResult.match[3], 
+      html : parseResult.match[5]
+    });
 }
 
 function clearButtons() {
@@ -152,7 +193,6 @@ function parseAndCreateButtons() {
   for(var i = 0; i < lines.length; i+=1) {
     var cur = lines[i];
     var parseResult = parseLine(cur);
-    console.log(parseResult);
     if(parseResult.matchedSyntax != null) {
       if(parseResult.matchedSyntax.type === "function") {
         fn = createFunctionByParseResult(parseResult);
@@ -216,11 +256,12 @@ function inlineExecute(executor, handleResult, resultHandler) {
 }
 
 function loadDataFile(editor) {
-  irodori.readData(function(err,data) {
+  remote.readData(function(err,data) {
     if(err) {
       editor.setValue("", -1);
     } else {
       editor.setValue(data, -1);
+      editor.getSession().setUndoManager(new ace.UndoManager());
     }
   });
 }
@@ -246,7 +287,7 @@ $(document).ready(function() {
     // Set timer for save.
     saveTimer = setTimeout(function() {
       // Write datafile.
-      irodori.writeData(getContent(), function() {});
+      remote.writeData(getContent(), function() {});
  
       // Show notification.
       saveNotification();
@@ -257,20 +298,20 @@ $(document).ready(function() {
   });
 
   $("#btnDevTools").click(function() {
-    irodori.openDevTools();
+    remote.openDevTools();
   });
 
   $("#inputMode").change(onChangeInputMode);
 
   $(window).on("beforeunload",function(e){
-      irodori.writeData(getContent(), function() {});
+      remote.writeData(getContent(), function() {});
   });
 
   $(document).keydown(function(e) {
     if(e.ctrlKey) {
       // Execute shell script.
       if(e.keyCode == 13) {
-        inlineExecute(irodori.execProc, e.shiftKey, printShellOutput);
+        inlineExecute(remote.execProc, e.shiftKey, printShellOutput);
       }
 
       // Execute safe evaluate.
